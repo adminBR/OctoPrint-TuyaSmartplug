@@ -69,7 +69,7 @@ class tuyasmartplugPlugin(
                     "displayWarning": True,
                     "warnPrinting": False,
                     "gcodeEnabled": False,
-                    "v33": False,
+                    "protocol": 3.3,
                     "gcodeOnDelay": 0,
                     "gcodeOffDelay": 0,
                     "autoConnect": True,
@@ -274,8 +274,7 @@ class tuyasmartplugPlugin(
             self._settings.get(["arrSmartplugs"]), "label", pluglabel
         )
         device = tinytuya.OutletDevice(plug["id"], plug["ip"], plug["localKey"])
-        if plug.get("v33"):
-            device.set_version(3.3)
+        device.set_version(float(plug["protocol"]))
 
         commands = {
             "info": ("status", None),
