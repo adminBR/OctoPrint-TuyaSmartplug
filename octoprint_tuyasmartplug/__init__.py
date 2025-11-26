@@ -70,7 +70,7 @@ class tuyasmartplugPlugin(
                     "displayWarning": True,
                     "warnPrinting": False,
                     "gcodeEnabled": False,
-                    "v33": False,
+                    "protocol": 3.3,
                     "gcodeOnDelay": 0,
                     "gcodeOffDelay": 0,
                     "autoConnect": True,
@@ -270,8 +270,7 @@ class tuyasmartplugPlugin(
             self._settings.get(["arrSmartplugs"]), "label", pluglabel
         )
         device = pytuya.OutletDevice(plug["id"], plug["ip"], plug["localKey"])
-        if plug.get("v33"):
-            device.version = 3.3
+        device.set_version(float(plug["protocol"]))
 
         commands = {
             "info": ("status", None),
@@ -369,7 +368,9 @@ class tuyasmartplugPlugin(
                 self._tuyasmartplug_logger.debug(
                     "Received G4 P1 command, attempting power on of %s." % name
                 )
-                plug = self.plug_search(self._settings.get(["arrSmartplugs"]), "ip", name)
+                plug = self.plug_search(
+                    self._settings.get(["arrSmartplugs"]), "ip", name
+                )
                 if not plug:
                     plug = self.plug_search(
                         self._settings.get(["arrSmartplugs"]), "label", name
@@ -386,7 +387,9 @@ class tuyasmartplugPlugin(
                 self._tuyasmartplug_logger.debug(
                     "Received G4 P2 command, attempting power off of %s." % name
                 )
-                plug = self.plug_search(self._settings.get(["arrSmartplugs"]), "ip", name)
+                plug = self.plug_search(
+                    self._settings.get(["arrSmartplugs"]), "ip", name
+                )
                 if not plug:
                     plug = self.plug_search(
                         self._settings.get(["arrSmartplugs"]), "label", name
